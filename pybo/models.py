@@ -9,12 +9,15 @@ class Question(models.Model):
     content 	질문의 내용
     create_date	질문을 작성한 일시
     modify_date 질문을 수정한 일시
+    voter       추천
     '''
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author_question', null=True)
     subject = models.CharField(max_length=200)
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(User, related_name='voter_question')
 
     def __str__(self):
         return self.subject
@@ -27,12 +30,15 @@ class Answer(models.Model):
     content     답변의 내용
     create_date	답변을 작성한 일시
     modify_date 답변을 수정한 일시
+    voter       추천
     '''
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author_answer', null=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(User, related_name='voter_answer')
 
 
 class Comment(models.Model):
